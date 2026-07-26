@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Scriptorium — Premium Assignment Writing Service</title>
+<meta name="description" content="Scriptorium — premium handwritten & typed assignment writing service. No login required." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖋️</text></svg>" />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="toast-container"></div>
+
+<!-- ═══════════ APP BAR ═══════════ -->
+<header class="app-bar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20L15 9M15 9l2.5-2.5a2 2 0 000-2.83l-.17-.17a2 2 0 00-2.83 0L12 6M15 9l-5 5M4 20l3-1 1-3"/></svg>
+    <span>Scriptorium</span>
+  </div>
+  <button class="app-bar-btn" onclick="switchView('settings')" aria-label="Settings">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9c.36.14.68.36 1 .51H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+  </button>
+</header>
+
+<!-- ═══════════ HOME VIEW ═══════════ -->
+<main id="home-view" class="view active">
+
+  <section class="hero">
+    <div class="hero-content">
+      <span class="eyebrow">✒️ Premium Manuscript Craft</span>
+      <h1>Assignments written<br/><span>like a masterpiece.</span></h1>
+      <p>Handwritten or typed — premium paper, flawless presentation, delivered to your door. No account needed, just place your order.</p>
+      <button class="btn btn-primary" onclick="openOrderFlow()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Start Your Order
+      </button>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:24px;">
+    <div class="section-head">
+      <span class="tag">Limited Time</span>
+      <h2>Recent Offers</h2>
+    </div>
+    <div class="hscroll">
+      <div class="offer-card card">
+        <span class="badge">New Customer</span>
+        <h3>10% Off First Order</h3>
+        <p>Use code <strong>WELCOME10</strong> at checkout</p>
+      </div>
+      <div class="offer-card card">
+        <span class="badge">Flat Discount</span>
+        <h3>₹50 Off</h3>
+        <p>Use code <strong>FLAT50</strong> on orders above ₹300</p>
+      </div>
+      <div class="offer-card card">
+        <span class="badge">Bulk Orders</span>
+        <h3>Custom Quotes</h3>
+        <p>Add a note for large multi-subject assignment sets</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="tag">The Craft</span>
+      <h2>Why Choose Scriptorium</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="card feature-card">
+        <div class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.8 5.6 21l2.4-7.2-6-4.8h7.6z"/></svg></div>
+        <h4>Premium Quality</h4>
+        <p>Neat handwriting or clean typing on finest paper stock.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h4>On-Time Delivery</h4>
+        <p>Choose your speed — 2 to 7 days, always on schedule.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5z"/></svg></div>
+        <h4>Transparent Pricing</h4>
+        <p>Fair, itemized pricing — no hidden charges, ever.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></div>
+        <h4>No Login Needed</h4>
+        <p>Order instantly — no accounts, no passwords.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="tag">Explore</span>
+      <h2>Assignment Categories</h2>
+    </div>
+    <div class="hscroll">
+      <div class="category-card card"><div class="emoji">✍️</div><h4>Handwritten</h4></div>
+      <div class="category-card card"><div class="emoji">⌨️</div><h4>Typed</h4></div>
+      <div class="category-card card"><div class="emoji">📐</div><h4>Diagrams</h4></div>
+      <div class="category-card card"><div class="emoji">📊</div><h4>Projects</h4></div>
+      <div class="category-card card"><div class="emoji">📓</div><h4>Journals</h4></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="tag">Simple Process</span>
+      <h2>How It Works</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div><h4>Upload your assignment</h4><p>PDF or photos — pages are auto-counted, no manual entry.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div><h4>Choose your style</h4><p>Paper type, cover, delivery speed and add-ons.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div><h4>Confirm & pay on delivery</h4><p>Share your address — pay cash when it arrives.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div><h4>Track without login</h4><p>Your order is saved right on this device.</p></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="tag">Loved By Students</span>
+      <h2>Customer Stories</h2>
+    </div>
+    <div class="hscroll">
+      <div class="testimonial-card card">
+        <div class="stars">★★★★★</div>
+        <p>"The handwriting quality was better than mine! Delivered right on time."</p>
+        <div class="author"><div class="avatar">A</div><div><div class="name">Aditi R.</div><div class="role">B.Com Student</div></div></div>
+      </div>
+      <div class="testimonial-card card">
+        <div class="stars">★★★★★</div>
+        <p>"Loved the hard cover option. Looked extremely professional for submission."</p>
+        <div class="author"><div class="avatar">K</div><div><div class="name">Karan M.</div><div class="role">Engineering Student</div></div></div>
+      </div>
+      <div class="testimonial-card card">
+        <div class="stars">★★★★☆</div>
+        <p>"Super easy ordering, no signup hassle. Page counting was spot on."</p>
+        <div class="author"><div class="avatar">S</div><div><div class="name">Sneha P.</div><div class="role">MBA Student</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="tag">Questions</span><h2>FAQ</h2></div>
+    <div id="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need to create an account?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-a">No. Scriptorium works without any login or signup — just place your order directly.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How is the page count calculated?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-a">Our system automatically detects the number of pages from your uploaded PDF or images — you can't edit it manually, ensuring fair pricing.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What payment methods are accepted?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-a">Cash on Delivery only — pay when your order arrives at your doorstep.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Where can I see my order status?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-a">Visit the "Orders" tab — your order history is stored securely on this device.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ═══════════ CREATE ORDER VIEW ═══════════ -->
+<main id="order-view" class="view">
+  <div class="progress-bar" id="order-progress">
+    <div class="seg done" data-step="1"></div><div class="seg" data-step="2"></div>
+    <div class="seg" data-step="3"></div><div class="seg" data-step="4"></div>
+  </div>
+  <div class="container" style="padding-top:20px;">
+
+    <!-- STEP 1: Type -->
+    <div class="order-step" data-step="1">
+      <div class="section-head"><span class="tag">Step 1 of 4</span><h2>Select Assignment Type</h2></div>
+      <div class="option-grid">
+        <div class="option-card card" data-type="handwritten" onclick="selectAssignmentType('handwritten')">
+          <div class="check">✓</div>
+          <div class="icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20L15 9M15 9l2.5-2.5a2 2 0 000-2.83l-.17-.17a2 2 0 00-2.83 0L12 6M15 9l-5 5M4 20l3-1 1-3"/></svg></div>
+          <h4>Handwritten</h4><p>Neatly handwritten by hand</p>
+        </div>
+        <div class="option-card card" data-type="typed" onclick="selectAssignmentType('typed')">
+          <div class="check">✓</div>
+          <div class="icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg></div>
+          <h4>Typed</h4><p>Cleanly typed & printed</p>
+        </div>
+      </div>
+      <div style="height:14px"></div>
+      <button class="btn btn-primary btn-block" id="step1-next" disabled onclick="goToStep(2)">Continue</button>
+    </div>
+
+    <!-- STEP 2: Upload -->
+    <div class="order-step" data-step="2" style="display:none;">
+      <div class="section-head"><span class="tag">Step 2 of 4</span><h2>Upload Your Assignment</h2><p>PDF, PNG, JPG or JPEG — max <span id="max-upload-label">20</span>MB each</p></div>
+      <div class="upload-zone card" id="upload-zone" onclick="document.getElementById('file-input').click()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M12 4l-4 4M12 4l4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+        <h4>Tap to upload files</h4>
+        <p>One PDF, or multiple photos (one per page)</p>
+      </div>
+      <input type="file" id="file-input" accept=".pdf,.png,.jpg,.jpeg" multiple hidden onchange="handleFileSelect(event)" />
+      <div id="upload-progress-wrap" style="display:none; margin-top:14px;">
+        <div class="progress-track"><div class="progress-fill" id="upload-progress-fill" style="width:0%"></div></div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:6px;" id="upload-progress-label">Analyzing pages…</p>
+      </div>
+      <div class="file-preview-list" id="file-preview-list"></div>
+      <div id="page-count-display"></div>
+      <div style="height:14px"></div>
+      <button class="btn btn-primary btn-block" id="step2-next" disabled onclick="goToStep(3)">Continue</button>
+    </div>
+
+    <!-- STEP 3: Options -->
+    <div class="order-step" data-step="3" style="display:none;">
+      <div class="section-head"><span class="tag">Step 3 of 4</span><h2>Customize Your Order</h2></div>
+
+      <div class="field-group">
+        <label>Paper Type</label>
+        <div class="chip-grid" id="paper-type-chips"></div>
+      </div>
+
+      <div class="field-group">
+        <label>Delivery Time</label>
+        <div class="chip-grid" id="delivery-chips">
+          <button class="chip" data-value="2-3" onclick="selectChip(this,'delivery')">2–3 Days</button>
+          <button class="chip" data-value="3-5" onclick="selectChip(this,'delivery')">3–5 Days</button>
+          <button class="chip" data-value="5-7" onclick="selectChip(this,'delivery')">5–7 Days</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Cover</label>
+        <div class="chip-grid" id="cover-chips">
+          <button class="chip selected" data-value="none" onclick="selectChip(this,'cover')">None</button>
+          <button class="chip" data-value="transparent_plastic" onclick="selectChip(this,'cover')">Transparent Plastic</button>
+          <button class="chip" data-value="plastic_clip" onclick="selectChip(this,'cover')">Plastic Clip</button>
+          <button class="chip" data-value="hard_cover" onclick="selectChip(this,'cover')">Hard Cover</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Add-ons (optional)</label>
+        <div class="chip-grid" id="addon-chips">
+          <button class="chip" data-value="black_cover" onclick="toggleAddonChip(this)">Black Cover</button>
+          <button class="chip" data-value="brown_cover" onclick="toggleAddonChip(this)">Brown Cover</button>
+          <button class="chip" data-value="custom_cover" onclick="toggleAddonChip(this)">Custom Color Cover</button>
+          <button class="chip" data-value="plastic_sheet_protector" onclick="toggleAddonChip(this)">Plastic Sheet Protector</button>
+          <button class="chip" data-value="name_slip" onclick="toggleAddonChip(this)">Name Slip (Free)</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Customer Note</label>
+        <textarea id="customer-note" placeholder="Explain any specific requirements, subject name, formatting instructions, etc."></textarea>
+      </div>
+
+      <div class="card" style="padding:16px; margin-top:6px;">
+        <div class="summary-row"><span class="muted">Estimated Price</span><span id="estimate-total" style="font-weight:700;">₹0</span></div>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:4px;">Final amount is calculated securely on our server at checkout.</p>
+      </div>
+
+      <div style="height:14px"></div>
+      <button class="btn btn-primary btn-block" id="step3-next" disabled onclick="goToStep(4)">Continue</button>
+    </div>
+
+    <!-- STEP 4: Shipping & Review -->
+    <div class="order-step" data-step="4" style="display:none;">
+      <div class="section-head"><span class="tag">Step 4 of 4</span><h2>Shipping & Review</h2></div>
+
+      <div class="field-group"><label>Full Name *</label><input type="text" id="ship-name" placeholder="Your full name" /></div>
+      <div class="field-row">
+        <div class="field-group"><label>Phone Number *</label><input type="tel" id="ship-phone" placeholder="10-digit mobile" maxlength="10" /></div>
+        <div class="field-group"><label>Alternate Number</label><input type="tel" id="ship-alt-phone" placeholder="Optional" maxlength="10" /></div>
+      </div>
+      <div class="field-group"><label>Address *</label><textarea id="ship-address" placeholder="House no, street, area"></textarea></div>
+      <div class="field-row">
+        <div class="field-group"><label>City *</label><input type="text" id="ship-city" /></div>
+        <div class="field-group"><label>State *</label><input type="text" id="ship-state" /></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>PIN Code *</label><input type="text" id="ship-pin" maxlength="6" /></div>
+        <div class="field-group"><label>Landmark</label><input type="text" id="ship-landmark" placeholder="Optional" /></div>
+      </div>
+
+      <div class="field-group">
+        <label>Coupon Code</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="coupon-input" placeholder="Enter coupon (optional)" style="text-transform:uppercase;" />
+          <button class="btn btn-outline" onclick="applyCoupon()" style="white-space:nowrap;">Apply</button>
+        </div>
+        <p id="coupon-status" style="font-size:12px; margin-top:6px;"></p>
+      </div>
+
+      <div class="card" style="padding:16px; margin-top:10px;" id="order-summary-card"></div>
+
+      <div style="height:14px"></div>
+      <button class="btn btn-primary btn-block" id="place-order-btn" onclick="placeOrder()">
+        <span id="place-order-label">Place Order (Cash on Delivery)</span>
+      </button>
+      <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:10px;">By placing this order you agree to pay the final amount in cash upon delivery.</p>
+    </div>
+
+  </div>
+</main>
+
+<!-- ═══════════ THANK YOU VIEW ═══════════ -->
+<main id="thankyou-view" class="view">
+  <div class="container" style="text-align:center;">
+    <div class="thankyou-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <h2 style="font-size:22px;">Order Placed Successfully!</h2>
+    <p style="color:var(--text-muted); margin-top:8px; font-size:13.5px;">Your assignment is being prepared. Pay cash on delivery.</p>
+    <div class="card" style="padding:20px; margin-top:24px; text-align:left;" id="thankyou-summary"></div>
+    <button class="btn btn-primary btn-block" style="margin-top:20px;" onclick="switchView('home')">Back to Home</button>
+  </div>
+</main>
+
+<!-- ═══════════ ORDERS VIEW ═══════════ -->
+<main id="orders-view" class="view">
+  <div class="container" style="padding-top:20px;">
+    <div class="section-head"><h2>Your Orders</h2><p>Stored locally on this device</p></div>
+    <div id="orders-list"></div>
+  </div>
+</main>
+
+<!-- ═══════════ SETTINGS VIEW ═══════════ -->
+<main id="settings-view" class="view">
+  <div class="container" style="padding-top:20px;">
+    <div class="section-head"><h2>Settings</h2></div>
+
+    <div class="settings-group">
+      <h3>Appearance</h3>
+      <div class="card" style="padding:14px 16px;">
+        <div class="theme-toggle-group">
+          <button data-theme="light" onclick="setThemePreference('light')">Light</button>
+          <button data-theme="dark" onclick="setThemePreference('dark')">Dark</button>
+          <button data-theme="system" onclick="setThemePreference('system')">System</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Information</h3>
+      <div class="card">
+        <div class="settings-row" onclick="openInfoModal('about')"><div class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span class="label">About Scriptorium</span></div><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="settings-row" onclick="openInfoModal('faq')"><div class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .5c0 1.5-2 2-2 3.5M12 17h.01"/></svg><span class="label">FAQ</span></div><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="settings-row" onclick="openInfoModal('support')"><div class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h4"/><path d="M14 21l4-4-4-4M18 17H9"/></svg><span class="label">Support</span></div><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="settings-row" onclick="openInfoModal('privacy')"><div class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg><span class="label">Privacy Policy</span></div><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="settings-row" onclick="openInfoModal('terms')"><div class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg><span class="label">Terms & Conditions</span></div><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Share & Support Us</h3>
+      <div class="card">
+        <div class="settings-row" onclick="shareWebsite()"><div class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span class="label">Share Website</span></div></div>
+        <div class="settings-row" onclick="rateWebsite()"><div class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.8 5.6 21l2.4-7.2-6-4.8h7.6z"/></svg><span class="label">Rate Scriptorium</span></div></div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Data</h3>
+      <div class="card">
+        <div class="settings-row" onclick="confirmClearData()"><div class="left"><svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.8"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z"/></svg><span class="label" style="color:#dc2626;">Clear Local Data</span></div></div>
+      </div>
+    </div>
+
+    <p style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:20px;">Scriptorium · Version <span id="app-version"></span></p>
+  </div>
+</main>
+
+<!-- ═══════════ INFO MODAL ═══════════ -->
+<div class="modal-overlay" id="info-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h3 id="info-modal-title" style="font-size:18px; margin-bottom:12px;"></h3>
+    <div id="info-modal-body" style="font-size:13.5px; line-height:1.7; color:var(--text-muted);"></div>
+    <button class="btn btn-outline btn-block" style="margin-top:18px;" onclick="closeInfoModal()">Close</button>
+  </div>
+</div>
+
+<!-- ═══════════ BOTTOM NAVIGATION ═══════════ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" data-nav="home" onclick="switchView('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="nav-item" data-nav="orders" onclick="switchView('orders')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2h6l1 4H8l1-4z"/><path d="M4 7h16l-1.5 13a2 2 0 01-2 1.8H7.5a2 2 0 01-2-1.8L4 7z"/></svg>
+    <span>Orders</span>
+  </button>
+  <button class="ink-fab" onclick="openOrderFlow()" aria-label="New Order">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20L15 9M15 9l2.5-2.5a2 2 0 000-2.83l-.17-.17a2 2 0 00-2.83 0L12 6M15 9l-5 5M4 20l3-1 1-3"/></svg>
+  </button>
+  <button class="nav-item" data-nav="settings" onclick="switchView('settings')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9c.36.14.68.36 1 .51H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    <span>Settings</span>
+  </button>
+</nav>
+
+<script src="assets/config.js"></script>
+<script src="assets/theme.js"></script>
+<script src="assets/db.js"></script>
+<script src="assets/api.js"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/order.js"></script>
+<script src="assets/orders-page.js"></script>
+<script src="assets/settings.js"></script>
+<script src="assets/main.js"></script>
+</body>
+</html>

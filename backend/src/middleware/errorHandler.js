@@ -48,4 +48,3 @@ function notFoundHandler(req, res, next) {
 }
 
 module.exports = { AppError, asyncHandler, errorHandler, notFoundHandler };
-    

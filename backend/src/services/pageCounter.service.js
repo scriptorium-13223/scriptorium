@@ -95,4 +95,3 @@ async function calculatePageCount(files) {
 }
 
 module.exports = { calculatePageCount, countPdfPages, detectImageContent };
-    

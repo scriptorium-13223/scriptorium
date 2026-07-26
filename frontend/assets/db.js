@@ -49,5 +49,4 @@ async function clearAllLocalData() {
     tx.oncomplete = () => resolve(true);
     tx.onerror = () => reject(tx.error);
   });
-          }
-      
+}

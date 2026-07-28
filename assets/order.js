@@ -88,19 +88,30 @@ async function handleFileSelect(event) {
 
   selectedFiles = files;
   renderFilePreviews();
+  await attemptPageCount(0);
+}
 
+// Retries automatically once (Render's free tier can take 30-50s to wake up from
+// sleep, and the very first request during wake-up often fails outright). After
+// two failed attempts, shows a manual Retry button instead of forcing the user
+// to re-pick the file from the OS file picker.
+async function attemptPageCount(attemptNumber) {
+  const uploadZone = document.getElementById("upload-zone");
   const progressWrap = document.getElementById("upload-progress-wrap");
   const progressFill = document.getElementById("upload-progress-fill");
   const progressLabel = document.getElementById("upload-progress-label");
+
+  uploadZone.classList.add("processing");
   progressWrap.style.display = "block";
   progressFill.style.width = "15%";
-  progressLabel.textContent = "Uploading & analyzing pages…";
+  progressLabel.textContent =
+    attemptNumber === 0 ? "Uploading & analyzing pages…" : "Server is waking up, retrying…";
 
   let fakeProgress = 15;
   const interval = setInterval(() => {
-    fakeProgress = Math.min(fakeProgress + 10, 85);
+    fakeProgress = Math.min(fakeProgress + 8, 85);
     progressFill.style.width = `${fakeProgress}%`;
-  }, 180);
+  }, 400);
 
   try {
     const result = await previewPageCount(selectedFiles);
@@ -115,11 +126,26 @@ async function handleFileSelect(event) {
         ${result.pageCount} page${result.pageCount > 1 ? "s" : ""} detected automatically
       </div>`;
     document.getElementById("step2-next").disabled = false;
+    uploadZone.classList.remove("processing");
     setTimeout(() => (progressWrap.style.display = "none"), 800);
   } catch (err) {
     clearInterval(interval);
+    uploadZone.classList.remove("processing");
+
+    if (attemptNumber === 0) {
+      // Silent auto-retry once - handles the common Render cold-start case
+      progressLabel.textContent = "Server is waking up, retrying in a few seconds…";
+      setTimeout(() => attemptPageCount(1), 4000);
+      return;
+    }
+
+    // Second failure - show a manual Retry button, don't force re-picking the file
     progressWrap.style.display = "none";
-    showToast(err.message || "Could not process files.", "error");
+    document.getElementById("page-count-display").innerHTML = `
+      <div class="callout-error" style="background:rgba(220,38,38,0.08); border:1px solid rgba(220,38,38,0.3); border-radius:12px; padding:12px 14px; font-size:12.5px; color:#dc2626;">
+        Could not reach the server (${err.message || "connection issue"}). This can happen if the server was asleep.
+      </div>
+      <button class="btn btn-outline btn-block" style="margin-top:10px;" onclick="attemptPageCount(0)">🔄 Retry Upload</button>`;
     document.getElementById("step2-next").disabled = true;
   }
 }

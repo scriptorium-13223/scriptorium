@@ -39,13 +39,114 @@
     <button class="btn btn-outline" style="padding:8px 14px; font-size:12.5px;" onclick="adminLogout()">Logout</button>
   </div>
 
-  <div class="filter-tabs">
-    <button class="active" data-status="" onclick="setStatusFilter('', this)">All</button>
-    <button data-status="pending" onclick="setStatusFilter('pending', this)">Pending</button>
-    <button data-status="processing" onclick="setStatusFilter('processing', this)">Processing</button>
+  <div class="filter-tabs" id="admin-main-tabs">
+    <button class="active" data-tab="orders" onclick="setAdminTab('orders', this)">📋 Orders</button>
+    <button data-tab="settings" onclick="setAdminTab('settings', this)">⚙️ Store Settings</button>
+    <button data-tab="pricing" onclick="setAdminTab('pricing', this)">💰 Pricing</button>
+    <button data-tab="coupons" onclick="setAdminTab('coupons', this)">🏷️ Coupons</button>
   </div>
 
-  <div class="container" id="admin-orders-list"></div>
+  <!-- ORDERS PANEL -->
+  <div id="admin-panel-orders" class="admin-panel">
+    <div class="filter-tabs">
+      <button class="active" data-status="" onclick="setStatusFilter('', this)">All</button>
+      <button data-status="pending" onclick="setStatusFilter('pending', this)">Pending</button>
+      <button data-status="processing" onclick="setStatusFilter('processing', this)">Processing</button>
+    </div>
+    <div class="container" id="admin-orders-list"></div>
+  </div>
+
+  <!-- STORE SETTINGS PANEL -->
+  <div id="admin-panel-settings" class="admin-panel" style="display:none;">
+    <div class="container" style="padding-top:16px;">
+
+      <div class="card" style="padding:18px; margin-bottom:16px;">
+        <h3 style="font-size:15px; margin-bottom:4px;">Store Status</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">Pause new orders any time (e.g. during holidays or when overloaded). Customers will see a "not accepting orders" banner.</p>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span id="store-status-label" style="font-weight:700; font-size:14px;">Loading…</span>
+          <button class="btn btn-primary" id="store-toggle-btn" onclick="toggleOrdersOpen()" style="padding:10px 20px;">Toggle</button>
+        </div>
+      </div>
+
+      <div class="card" style="padding:18px; margin-bottom:16px;">
+        <h3 style="font-size:15px; margin-bottom:4px;">Telegram Chat ID</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">Change this if you switch devices/SIM and get a new Telegram chat ID — no redeploy needed.</p>
+        <div class="field-group" style="margin-bottom:10px;"><input type="text" id="telegram-chat-id-input" placeholder="e.g. 123456789" /></div>
+        <button class="btn btn-primary btn-block" onclick="saveTelegramChatId()">Save Chat ID</button>
+      </div>
+
+      <div class="card" style="padding:18px;">
+        <h3 style="font-size:15px; margin-bottom:4px;">Logo Flip-Card Text</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">Shown on the home page when a visitor taps the circular logo (flips over).</p>
+        <div class="field-group" style="margin-bottom:10px;"><textarea id="flip-text-input" rows="3"></textarea></div>
+        <button class="btn btn-primary btn-block" onclick="saveFlipText()">Save Text</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PRICING PANEL -->
+  <div id="admin-panel-pricing" class="admin-panel" style="display:none;">
+    <div class="container" style="padding-top:16px;">
+      <div class="card" style="padding:18px;">
+        <h3 style="font-size:15px; margin-bottom:14px;">Per-Page Writing Rates (₹)</h3>
+        <div class="field-row" style="margin-bottom:10px;">
+          <div class="field-group"><label>Handwritten 2-3 Days</label><input type="number" id="price-hw-2-3" step="0.5" /></div>
+          <div class="field-group"><label>Handwritten 3-5 Days</label><input type="number" id="price-hw-3-5" step="0.5" /></div>
+        </div>
+        <div class="field-row" style="margin-bottom:10px;">
+          <div class="field-group"><label>Handwritten 5-7 Days</label><input type="number" id="price-hw-5-7" step="0.5" /></div>
+          <div class="field-group"><label>Typed (per page)</label><input type="number" id="price-typed" step="0.5" /></div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:18px; margin-top:14px;">
+        <h3 style="font-size:15px; margin-bottom:14px;">Material & Add-on Costs (₹)</h3>
+        <div class="field-row" style="margin-bottom:10px;">
+          <div class="field-group"><label>Ruled Paper /sheet</label><input type="number" id="price-ruled" step="0.5" /></div>
+          <div class="field-group"><label>Punch Ruled /sheet</label><input type="number" id="price-punch-ruled" step="0.5" /></div>
+        </div>
+        <div class="field-row" style="margin-bottom:10px;">
+          <div class="field-group"><label>Interleaved /page</label><input type="number" id="price-interleaved" step="0.5" /></div>
+          <div class="field-group"><label>Blank Punch /page</label><input type="number" id="price-blank" step="0.5" /></div>
+        </div>
+        <div class="field-row" style="margin-bottom:10px;">
+          <div class="field-group"><label>Transparent Cover</label><input type="number" id="price-transparent" step="1" /></div>
+          <div class="field-group"><label>Plastic Clip</label><input type="number" id="price-clip" step="1" /></div>
+        </div>
+        <div class="field-row" style="margin-bottom:10px;">
+          <div class="field-group"><label>Hard Cover</label><input type="number" id="price-hardcover" step="1" /></div>
+          <div class="field-group"><label>Black/Brown/Custom Cover</label><input type="number" id="price-colorcover" step="1" /></div>
+        </div>
+        <div class="field-row" style="margin-bottom:10px;">
+          <div class="field-group"><label>Plastic Sheet Protector</label><input type="number" id="price-sheet-protector" step="1" /></div>
+          <div class="field-group"><label>Name Slip</label><input type="number" id="price-nameslip" step="1" /></div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" style="margin-top:14px;" onclick="savePricing()">Save All Prices</button>
+    </div>
+  </div>
+
+  <!-- COUPONS PANEL -->
+  <div id="admin-panel-coupons" class="admin-panel" style="display:none;">
+    <div class="container" style="padding-top:16px;">
+      <div class="card" style="padding:18px; margin-bottom:16px;">
+        <h3 style="font-size:15px; margin-bottom:14px;">Add / Update Coupon</h3>
+        <div class="field-group"><label>Code</label><input type="text" id="new-coupon-code" placeholder="e.g. WELCOME10" style="text-transform:uppercase;" /></div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>Type</label>
+            <select id="new-coupon-type"><option value="percentage">Percentage %</option><option value="flat">Flat ₹</option></select>
+          </div>
+          <div class="field-group"><label>Value</label><input type="number" id="new-coupon-value" placeholder="10" /></div>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="createCoupon()">Save Coupon</button>
+      </div>
+      <div id="coupons-list"></div>
+    </div>
+  </div>
+
 </div>
 
 <script src="assets/config.js"></script>

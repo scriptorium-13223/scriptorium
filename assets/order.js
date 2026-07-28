@@ -91,10 +91,12 @@ async function handleFileSelect(event) {
   await attemptPageCount(0);
 }
 
-// Retries automatically once (Render's free tier can take 30-50s to wake up from
-// sleep, and the very first request during wake-up often fails outright). After
-// two failed attempts, shows a manual Retry button instead of forcing the user
-// to re-pick the file from the OS file picker.
+// Retries automatically multiple times with backoff (Render's free tier can take
+// 30-50s to wake up from sleep, and requests during that window fail outright).
+// Only after several attempts does it show a manual Retry button, so the user
+// isn't forced to re-pick the file from the OS file picker on every failure.
+const RETRY_DELAYS_MS = [4000, 8000, 12000, 15000]; // ~40s total coverage
+
 async function attemptPageCount(attemptNumber) {
   const uploadZone = document.getElementById("upload-zone");
   const progressWrap = document.getElementById("upload-progress-wrap");
@@ -105,13 +107,13 @@ async function attemptPageCount(attemptNumber) {
   progressWrap.style.display = "block";
   progressFill.style.width = "15%";
   progressLabel.textContent =
-    attemptNumber === 0 ? "Uploading & analyzing pages…" : "Server is waking up, retrying…";
+    attemptNumber === 0 ? "Uploading & analyzing pages…" : `Server is waking up, retrying… (attempt ${attemptNumber + 1})`;
 
   let fakeProgress = 15;
   const interval = setInterval(() => {
-    fakeProgress = Math.min(fakeProgress + 8, 85);
+    fakeProgress = Math.min(fakeProgress + 6, 85);
     progressFill.style.width = `${fakeProgress}%`;
-  }, 400);
+  }, 500);
 
   try {
     const result = await previewPageCount(selectedFiles);
@@ -132,18 +134,18 @@ async function attemptPageCount(attemptNumber) {
     clearInterval(interval);
     uploadZone.classList.remove("processing");
 
-    if (attemptNumber === 0) {
-      // Silent auto-retry once - handles the common Render cold-start case
-      progressLabel.textContent = "Server is waking up, retrying in a few seconds…";
-      setTimeout(() => attemptPageCount(1), 4000);
+    if (attemptNumber < RETRY_DELAYS_MS.length) {
+      const secondsLeft = Math.round(RETRY_DELAYS_MS[attemptNumber] / 1000);
+      progressLabel.textContent = `Server is waking up — retrying in ${secondsLeft}s…`;
+      setTimeout(() => attemptPageCount(attemptNumber + 1), RETRY_DELAYS_MS[attemptNumber]);
       return;
     }
 
-    // Second failure - show a manual Retry button, don't force re-picking the file
+    // All auto-retries exhausted - show a manual Retry button, don't force re-picking the file
     progressWrap.style.display = "none";
     document.getElementById("page-count-display").innerHTML = `
       <div class="callout-error" style="background:rgba(220,38,38,0.08); border:1px solid rgba(220,38,38,0.3); border-radius:12px; padding:12px 14px; font-size:12.5px; color:#dc2626;">
-        Could not reach the server (${err.message || "connection issue"}). This can happen if the server was asleep.
+        Could not reach the server (${err.message || "connection issue"}) after several tries.
       </div>
       <button class="btn btn-outline btn-block" style="margin-top:10px;" onclick="attemptPageCount(0)">🔄 Retry Upload</button>`;
     document.getElementById("step2-next").disabled = true;
@@ -324,6 +326,10 @@ function validateShippingForm() {
 }
 
 async function placeOrder() {
+  if (window.ORDERS_CURRENTLY_OPEN === false) {
+    showToast("We're currently not accepting new orders. Please check back soon.", "error");
+    return;
+  }
   if (!validateShippingForm()) return;
   if (!selectedFiles.length) {
     showToast("Please upload your assignment file(s).", "error");

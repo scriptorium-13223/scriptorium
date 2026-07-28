@@ -70,6 +70,59 @@ async function adminUpdateStatus(orderId, status) {
   });
 }
 
+// ── Public (no-auth) ──
+async function fetchPublicSettings() {
+  return apiRequest("/public/settings");
+}
+
 async function adminMarkDelivered(orderId) {
   return apiRequest(`/admin/orders/${orderId}`, { method: "DELETE", headers: adminAuthHeader() });
+}
+
+// ── Admin: Settings ──
+async function adminGetSettings() {
+  return apiRequest("/admin/settings", { headers: adminAuthHeader() });
+}
+async function adminUpdatePricing(pricingPayload) {
+  return apiRequest("/admin/settings/pricing", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...adminAuthHeader() },
+    body: JSON.stringify(pricingPayload),
+  });
+}
+async function adminUpdateTelegramChatId(chatId) {
+  return apiRequest("/admin/settings/telegram-chat-id", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...adminAuthHeader() },
+    body: JSON.stringify({ chatId }),
+  });
+}
+async function adminSetOrdersOpen(open) {
+  return apiRequest("/admin/settings/orders-open", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...adminAuthHeader() },
+    body: JSON.stringify({ open }),
+  });
+}
+async function adminUpdateFlipText(text) {
+  return apiRequest("/admin/settings/flip-card-text", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...adminAuthHeader() },
+    body: JSON.stringify({ text }),
+  });
+}
+
+// ── Admin: Coupons ──
+async function adminListCoupons() {
+  return apiRequest("/admin/coupons", { headers: adminAuthHeader() });
+}
+async function adminCreateCoupon(payload) {
+  return apiRequest("/admin/coupons", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...adminAuthHeader() },
+    body: JSON.stringify(payload),
+  });
+}
+async function adminDeleteCoupon(code) {
+  return apiRequest(`/admin/coupons/${code}`, { method: "DELETE", headers: adminAuthHeader() });
 }

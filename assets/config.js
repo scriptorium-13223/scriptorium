@@ -1,10 +1,10 @@
-// ─────────────────────────────────────────────
+hy6// ─────────────────────────────────────────────
 //  config.js — Scriptorium frontend configuration
 // ─────────────────────────────────────────────
 
 // ⚠️ Set this to your deployed backend URL after deploying to Render.
 // Example: "https://scriptorium-backend.onrender.com/api"
-const API_BASE_URL = "https://scriptorium-a2x0.onrender.com";
+const API_BASE_URL = "https://scriptorium-a2x0.onrender.com/api";
 
 // These numbers MIRROR the backend's pricing.service.js for a live on-screen
 // ESTIMATE only. They are never sent to the server and never used to charge

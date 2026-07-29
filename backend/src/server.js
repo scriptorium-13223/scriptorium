@@ -13,6 +13,7 @@ const orderRoutes = require('./routes/order.routes');
 const uploadRoutes = require('./routes/upload.routes');
 const couponRoutes = require('./routes/coupon.routes');
 const adminRoutes = require('./routes/admin.routes');
+const publicRoutes = require('./routes/public.routes');
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/public', publicRoutes);
 
 // --- 404 + error handling (must be last) ---
 app.use(notFoundHandler);
@@ -67,4 +69,3 @@ process.on('SIGTERM', () => {
 });
 
 module.exports = app;
-  

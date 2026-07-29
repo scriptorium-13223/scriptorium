@@ -9,6 +9,7 @@ const { calculateOrderPrice } = require('../services/pricing.service');
 const { generateInvoicePDF } = require('../services/invoice.service');
 const { sendOrderNotification } = require('../services/telegram.service');
 const supabaseService = require('../services/supabase.service');
+const settingsService = require('../services/settings.service');
 
 const REQUIRED_FIELDS = [
   'assignmentType',
@@ -52,6 +53,12 @@ router.post(
     const body = req.body;
     validateShipping(body);
 
+    // Admin can pause new orders from the admin panel without redeploying
+    const ordersOpen = await settingsService.areOrdersOpen();
+    if (!ordersOpen) {
+      throw new AppError('We are currently not accepting new orders. Please check back soon.', 403, 'ORDERS_CLOSED');
+    }
+
     let addons = [];
     if (body.addons) {
       try {
@@ -68,7 +75,8 @@ router.post(
     // 2. Coupon validation (if provided)
     const coupon = body.couponCode ? await supabaseService.validateCoupon(body.couponCode) : null;
 
-    // 3. Backend-only pricing
+    // 3. Backend-only pricing (using current admin-configured rates)
+    const rates = await settingsService.getPricingRates();
     const priceBreakdown = calculateOrderPrice(
       {
         assignmentType: body.assignmentType,
@@ -78,7 +86,8 @@ router.post(
         addons,
         pageCount: totalPages,
       },
-      coupon
+      coupon,
+      rates
     );
 
     // 4. Upload the (single) representative file to Storage.
@@ -123,7 +132,8 @@ router.post(
     // Non-fatal: if Telegram fails, the order still succeeds for the customer;
     // we log loudly so it can be manually reconciled.
     try {
-      await sendOrderNotification(order, req.files, invoiceBuffer);
+      const chatId = await settingsService.getTelegramChatId();
+      await sendOrderNotification(order, req.files, invoiceBuffer, chatId);
     } catch (telegramErr) {
       console.error(`[TELEGRAM] Failed to notify for order ${order.order_code}:`, telegramErr.message);
     }

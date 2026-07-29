@@ -57,9 +57,7 @@ function formatOrderMessage(order) {
  * Telegram itself becomes the permanent order record since the DB row
  * is purged once the order is marked delivered.
  */
-async function sendOrderNotification(order, uploadedFiles, invoiceBuffer) {
-  const chatId = config.telegramChatId;
-
+async function sendOrderNotification(order, uploadedFiles, invoiceBuffer, chatId = config.telegramChatId) {
   await bot.sendMessage(chatId, formatOrderMessage(order), { parse_mode: 'Markdown' });
 
   for (const file of uploadedFiles) {

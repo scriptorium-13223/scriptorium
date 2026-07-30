@@ -1,6 +1,5 @@
 const { PDFDocument } = require('pdf-lib');
 const pdfParse = require('pdf-parse');
-const Tesseract = require('tesseract.js');
 const { AppError } = require('../middleware/errorHandler');
 
 /**
@@ -26,32 +25,18 @@ async function countPdfPages(buffer) {
 }
 
 /**
- * Runs OCR on an image buffer purely as a content-detection sanity check
- * (confirms the image actually contains a written/typed page, catches accidental
- * blank photos or non-assignment images). Does NOT affect the page count itself —
- * each image file always counts as exactly 1 page, per spec ("automatic detection"
- * here means detecting readable content, not miscounting pages).
- */
-async function detectImageContent(buffer) {
-  try {
-    const { data } = await Tesseract.recognize(buffer, 'eng', { logger: () => {} });
-    const textLength = (data.text || '').trim().length;
-    const confidence = data.confidence || 0;
-    return {
-      hasDetectableContent: textLength > 3 || confidence > 30,
-      confidence,
-      extractedChars: textLength,
-    };
-  } catch (err) {
-    // OCR failure should never block an order - it's a soft signal, not a hard gate
-    return { hasDetectableContent: true, confidence: 0, extractedChars: 0, ocrSkipped: true };
-  }
-}
-
-/**
  * Main entry point: given req.files (from multiFileUpload), returns the total
  * automatic page count plus a per-file breakdown. Customer never sees an editable
  * page count field - this is the sole source of truth used by the pricing engine.
+ *
+ * Images: one page per uploaded image file (each photo = one assignment page).
+ * PDFs: actual page count read from the file itself.
+ *
+ * Note: an earlier version ran OCR (Tesseract.js) on each image as a soft content
+ * check. It was removed - it never affected the page count or blocked orders
+ * (purely informational), while being memory/CPU-heavy enough to risk crashing
+ * on free-tier hosting (512MB RAM). Removing it makes the service lighter and
+ * more reliable with zero change to what the customer is charged or sees.
  */
 async function calculatePageCount(files) {
   if (!files || files.length === 0) {
@@ -71,27 +56,14 @@ async function calculatePageCount(files) {
     totalPages = pages;
     breakdown.push({ fileName: file.originalname, type: 'pdf', pages });
   } else {
-    // Multiple images - one page per image, each lightly OCR-scanned for a content flag
-    let flaggedCount = 0;
+    // Multiple images - one page per image
     for (const file of files) {
-      const detection = await detectImageContent(file.buffer);
-      if (!detection.hasDetectableContent && !detection.ocrSkipped) flaggedCount++;
-      breakdown.push({
-        fileName: file.originalname,
-        type: 'image',
-        pages: 1,
-        contentDetected: detection.hasDetectableContent,
-      });
+      breakdown.push({ fileName: file.originalname, type: 'image', pages: 1 });
       totalPages += 1;
-    }
-    // Informational only - we don't reject the order, just surface a warning flag
-    // the frontend/Telegram message can display so staff can double check.
-    if (flaggedCount > 0) {
-      breakdown.push({ warning: `${flaggedCount} image(s) had low/no detectable content.` });
     }
   }
 
   return { totalPages, breakdown };
 }
 
-module.exports = { calculatePageCount, countPdfPages, detectImageContent };
+module.exports = { calculatePageCount, countPdfPages };
